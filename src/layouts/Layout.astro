@@ -1,0 +1,102 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const {
+  title = 'Vhogal - Software Development',
+  description = 'Vhogal - Software que funciona. PEW3 e DOC3 para sua empresa.',
+  image = '/og-image.png'
+} = Astro.props;
+
+const siteUrl = 'https://vhogal.com.br';
+const fullTitle = title.includes('Vhogal') ? title : `${title} | Vhogal`;
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#000000" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <title>{fullTitle}</title>
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, siteUrl).href} />
+    <meta property="og:site_name" content="Vhogal" />
+    <meta property="og:locale" content="pt_BR" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalUrl} />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(image, siteUrl).href} />
+    <meta name="twitter:creator" content="@vhogal" />
+
+    <!-- Additional SEO -->
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Vhogal" />
+    <meta name="keywords" content="ponto eletrônico, assinatura digital, documentos digitais, WhatsApp, PEW3, DOC3, gestão empresarial, software empresarial" />
+
+    <!-- Geo Tags -->
+    <meta name="geo.region" content="BR-MG" />
+    <meta name="geo.placename" content="Manhuaçu" />
+
+    <!-- Preconnect to Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  </head>
+  <body class="bg-black text-white min-h-screen">
+    <slot />
+
+    <script>
+      // Smooth scroll with header offset
+      document.addEventListener('DOMContentLoaded', () => {
+        const headerOffset = 80; // Height of fixed header
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', function (e) {
+            const href = this.getAttribute('href');
+
+            // Skip if href is just "#"
+            if (!href || href === '#') return;
+
+            const targetId = href.substring(1);
+            const targetElement = document.getElementById(targetId);
+
+            if (targetElement) {
+              e.preventDefault();
+
+              const elementPosition = targetElement.getBoundingClientRect().top;
+              const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+              window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+              });
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

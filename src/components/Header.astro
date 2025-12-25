@@ -1,0 +1,164 @@
+---
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-sm border-b border-gray-800">
+  <div class="container">
+    <nav class="flex items-center justify-between h-20">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-2">
+        <img src="/logo.svg" alt="Vhogal" class="h-5 w-auto" />
+      </a>
+
+      <!-- Navigation Links -->
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#produtos" class="font-mono text-sm uppercase tracking-wider text-gray-300 hover:text-white transition-colors">
+          Produtos
+        </a>
+        <a href="#recursos" class="font-mono text-sm uppercase tracking-wider text-gray-300 hover:text-white transition-colors">
+          Recursos
+        </a>
+        <a href="#como-funciona" class="font-mono text-sm uppercase tracking-wider text-gray-300 hover:text-white transition-colors">
+          Como Funciona
+        </a>
+        <a href="#contato" class="font-mono text-sm uppercase tracking-wider text-gray-300 hover:text-white transition-colors">
+          Contato
+        </a>
+      </div>
+
+      <!-- CTA Button -->
+      <a href="#contato" class="btn-primary hidden md:inline-flex">
+        Fale Conosco
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14"></path>
+          <path d="m12 5 7 7-7 7"></path>
+        </svg>
+      </a>
+
+      <!-- Mobile Menu Button -->
+      <button class="md:hidden p-2 relative z-50" id="mobile-menu-btn" aria-label="Menu" aria-expanded="false">
+        <div class="w-6 h-5 flex flex-col justify-between">
+          <span class="hamburger-line block h-0.5 w-full bg-white transition-all duration-300"></span>
+          <span class="hamburger-line block h-0.5 w-full bg-white transition-all duration-300"></span>
+          <span class="hamburger-line block h-0.5 w-full bg-white transition-all duration-300"></span>
+        </div>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Mobile Menu Backdrop -->
+  <div id="mobile-backdrop" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"></div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="fixed top-20 left-0 right-0 bottom-0 z-40 md:hidden bg-black border-t border-gray-800 transform -translate-y-full opacity-0 transition-all duration-300 ease-out overflow-y-auto">
+    <div class="container py-6 flex flex-col gap-4">
+      <a href="#produtos" class="font-mono text-sm uppercase tracking-wider text-gray-300 hover:text-white transition-colors mobile-menu-link opacity-0 translate-y-4">
+        Produtos
+      </a>
+      <a href="#recursos" class="font-mono text-sm uppercase tracking-wider text-gray-300 hover:text-white transition-colors mobile-menu-link opacity-0 translate-y-4">
+        Recursos
+      </a>
+      <a href="#como-funciona" class="font-mono text-sm uppercase tracking-wider text-gray-300 hover:text-white transition-colors mobile-menu-link opacity-0 translate-y-4">
+        Como Funciona
+      </a>
+      <a href="#contato" class="font-mono text-sm uppercase tracking-wider text-gray-300 hover:text-white transition-colors mobile-menu-link opacity-0 translate-y-4">
+        Contato
+      </a>
+      <a href="#contato" class="btn-primary mt-4 justify-center mobile-menu-link opacity-0 translate-y-4">
+        Fale Conosco
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const backdrop = document.getElementById('mobile-backdrop');
+  const menuLinks = document.querySelectorAll('.mobile-menu-link');
+  const hamburgerLines = document.querySelectorAll('.hamburger-line');
+  let isMenuOpen = false;
+
+  const toggleMenu = () => {
+    isMenuOpen = !isMenuOpen;
+
+    if (isMenuOpen) {
+      // Open menu
+      mobileMenu?.classList.remove('-translate-y-full', 'opacity-0');
+      mobileMenu?.classList.add('translate-y-0', 'opacity-100');
+      backdrop?.classList.remove('pointer-events-none', 'opacity-0');
+      backdrop?.classList.add('pointer-events-auto', 'opacity-100');
+      menuBtn?.setAttribute('aria-expanded', 'true');
+
+      // Animate hamburger to X
+      if (hamburgerLines[0]) {
+        hamburgerLines[0].classList.add('rotate-45', 'translate-y-2');
+      }
+      if (hamburgerLines[1]) {
+        hamburgerLines[1].classList.add('opacity-0');
+      }
+      if (hamburgerLines[2]) {
+        hamburgerLines[2].classList.add('-rotate-45', '-translate-y-2');
+      }
+
+      // Animate menu links with stagger
+      menuLinks.forEach((link, index) => {
+        setTimeout(() => {
+          link.classList.remove('opacity-0', 'translate-y-4');
+          link.classList.add('opacity-100', 'translate-y-0');
+        }, index * 50);
+      });
+
+      // Prevent body scroll
+      document.body.style.overflow = 'hidden';
+    } else {
+      // Close menu
+      mobileMenu?.classList.remove('translate-y-0', 'opacity-100');
+      mobileMenu?.classList.add('-translate-y-full', 'opacity-0');
+      backdrop?.classList.remove('pointer-events-auto', 'opacity-100');
+      backdrop?.classList.add('pointer-events-none', 'opacity-0');
+      menuBtn?.setAttribute('aria-expanded', 'false');
+
+      // Animate X back to hamburger
+      if (hamburgerLines[0]) {
+        hamburgerLines[0].classList.remove('rotate-45', 'translate-y-2');
+      }
+      if (hamburgerLines[1]) {
+        hamburgerLines[1].classList.remove('opacity-0');
+      }
+      if (hamburgerLines[2]) {
+        hamburgerLines[2].classList.remove('-rotate-45', '-translate-y-2');
+      }
+
+      // Reset menu links
+      menuLinks.forEach((link) => {
+        link.classList.remove('opacity-100', 'translate-y-0');
+        link.classList.add('opacity-0', 'translate-y-4');
+      });
+
+      // Restore body scroll
+      document.body.style.overflow = '';
+    }
+  };
+
+  // Toggle menu on button click
+  menuBtn?.addEventListener('click', toggleMenu);
+
+  // Close menu when clicking backdrop
+  backdrop?.addEventListener('click', () => {
+    if (isMenuOpen) toggleMenu();
+  });
+
+  // Close menu when clicking on a link
+  menuLinks?.forEach(link => {
+    link.addEventListener('click', () => {
+      if (isMenuOpen) toggleMenu();
+    });
+  });
+
+  // Close menu on escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isMenuOpen) {
+      toggleMenu();
+    }
+  });
+</script>
