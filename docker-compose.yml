@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  vhogal-landing:
+    build: .
+    container_name: vhogal-landing
+    ports:
+      - "8089:8089"
+    restart: unless-stopped
